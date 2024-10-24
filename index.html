@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz App</title>
+    <style>
+      body {
+        font-family: cursive;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: rgb(167, 204, 240);
+      }
+      .heading {
+        text-align: center;
+        margin-bottom: 100px;
+      }
+      .question {
+        margin-bottom: 20px;
+      }
+      .options {
+        display: flex;
+        flex-direction: column;
+      }
+      button {
+        margin-top: 5px;
+        padding: 10px;
+        background-color: #dceaf7;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #86eee5;
+      }
+      #result {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="quiz-container">
+      <h1 class="heading">Quiz App</h1>
+      <div id="question-container"></div>
+      <div id="result"></div>
+    </div>
+
+    <script>
+      const quizData = [
+        {
+          question: "What is the capital of France?",
+          options: ["London", "Berlin", "Paris", "Madrid"],
+          correctAnswer: 2,
+        },
+        {
+          question: "Which planet is known as the Red Planet?",
+          options: ["Venus", "Mars", "Jupiter", "Saturn"],
+          correctAnswer: 1,
+        },
+        {
+          question: "What is 2 + 2?",
+          options: ["3", "4", "5", "6"],
+          correctAnswer: 1,
+        },
+      ];
+
+      let currentQuestion = 0;
+      let score = 0;
+
+      function loadQuestion() {
+        const questionContainer = document.getElementById("question-container");
+        const question = quizData[currentQuestion];
+
+        let html = `
+                <div class="question">
+                    <h2>${question.question}</h2>
+                    <div class="options">
+                        ${question.options
+                          .map(
+                            (option, index) => `
+                            <button onclick="checkAnswer(${index})">${option}</button>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                </div>
+            `;
+
+        questionContainer.innerHTML = html;
+      }
+
+      function checkAnswer(selectedIndex) {
+        const question = quizData[currentQuestion];
+        if (selectedIndex === question.correctAnswer) {
+          score++;
+        }
+
+        currentQuestion++;
+
+        if (currentQuestion < quizData.length) {
+          loadQuestion();
+        } else {
+          showResult();
+        }
+      }
+
+      function showResult() {
+        const resultContainer = document.getElementById("result");
+        const questionContainer = document.getElementById("question-container");
+
+        questionContainer.style.display = "none";
+        resultContainer.innerHTML = `You scored ${score} out of ${quizData.length}!`;
+      }
+
+      loadQuestion();
+    </script>
+  </body>
+</html>
